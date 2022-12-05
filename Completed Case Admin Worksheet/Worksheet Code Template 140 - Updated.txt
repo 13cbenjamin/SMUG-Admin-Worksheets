@@ -1,0 +1,115 @@
+<div style="background-color:#6FFFE9; width: 100%; padding: 0 0 10 0;">
+<div id="header_140_1" style="background-color:#3A506B; height: 28px; width: 100%;">
+<ul style="margin: 10; padding: 0; list-style-type: none; color:#FFFFFF;">
+    <li style="display: inline; float: left; font-size: 150%; font-weight: bold;"><a id="imageDivLink_140" href="javascript:toggle5('contentDivImg_140', 'imageDivLink_140');"><img style="padding: 2 0 0 0;" src="images/tac_minus.png"></a></li>
+    <li style="display: inline; float: left; font-size: 150%; font-weight: bold; padding: 0 0 0 10;">BAPCPA</li>
+</ul> 
+</div>
+<div id="contentDivImg_140" style="display: block; padding: 0 10 0 15;">
+<div style="width:5000px; overflow:hidden;"> 
+<div style="float:left; padding: 10 15 0 10;">
+<span style="color:#000000;font-size:12;"><strong>BAPCPA Review</strong></span> 
+<table class="table table-condensed table-bordered" style="background-color:#FFFFFF;width:auto;"> 
+    <tbody> 
+        <tr>
+            <td align="left"></td> 
+            <td align="center">Debtor 1</td> 
+            <td align="center">Debtor 2</td> 
+            <td align="center">Mailed</td> 
+            <td align="center">Satisfied</td> 
+            <td align="center">&nbsp;&nbsp;&nbsp;N/A&nbsp;&nbsp;&nbsp;</td> 
+        </tr> 
+        <tr> 
+            <td>Entitled to Discharge:</td> 
+            <td>{vwCRMainCase.DebtorEntitledToDischargeDescription}</td> 
+            <td>{vwCRMainCase.DebtorEntitledToDischarge0Description}</td> 
+            <td></td> 
+            <td align="center">[CheckBox64]</td> 
+            <td align="center">[CheckBox65]</td> 
+        </tr> 
+        <tr> 
+            <td>Credit Counsel Cert Date:</td> 
+            <td>{vwCRMainCase.CreditCounselCertificationDate@}</td> 
+            <td>{vwCRMainCase.CreditCounselCertificationDate0@}</td> 
+            <td></td>  
+            <td align="center">[CheckBox55]</td> 
+            <td align="center">[CheckBox56]</td> 
+        </tr> 
+        <tr> 
+            <td>Debtor Education Date:</td> 
+            <td>{vwCRMainCase.DebtorEducationDate@}</td> 
+            <td>{vwCRMainCase.DebtorEducationDate0@}</td> 
+            <td>|~SELECT CONVERT(VARCHAR, CAST(dbo.udfGetCaseDate({CaseID}, 30) AS DATE))~|</td>  
+            <td align="center">[CheckBox58]</td> 
+            <td align="center">[CheckBox59]</td> 
+        </tr> 
+        <tr> 
+            <td>DSO Certification Received:</td> 
+            <td>|~SELECT CONVERT(VARCHAR, CAST(dbo.udfGetCaseDate({CaseID}, 28) AS DATE))~|</td> 
+            <td>|~SELECT CONVERT(VARCHAR, CAST(dbo.udfGetCaseDate({CaseID}, 29) AS DATE))~|</td> 
+            <td>|~SELECT CONVERT(VARCHAR, CAST(dbo.udfGetCaseDate({CaseID}, 31) AS DATE))~|</td>         
+            <td align="center">[CheckBox61]</td> 
+            <td align="center">[CheckBox62]</td> 
+        </tr> 
+        <tr>
+            <td colspan=4 align="left"></td> 
+            <td align="center">Yes</td> 
+            <td align="center">&nbsp;&nbsp;&nbsp;N/A&nbsp;&nbsp;&nbsp;</td> 
+        </tr> 
+        <tr>
+            <td colspan=4>Homestead Exemption Over Federal Limit? (See Schedule C)</td> 
+            <td align="center">[CheckBox1]</td> 
+            <td align="center">[CheckBox2]</td> 
+        </tr> 
+        <tr>
+            <td colspan=4>Total Assets Exempted: {vwCRMainCase.TotalAssetsExempted$} (See Schedule C)</td> 
+            <td align="center">[CheckBox3]</td> 
+            <td align="center">[CheckBox4]</td> 
+        </tr> 
+        <tr> 
+            <td colspan=6><span style="color:#000000;font-size:12;"><strong>Comments:</strong></span></br>[CommentBox1.600]</td> 
+        </tr> 
+    </tbody>
+</table></div> 
+<div style="float:left; padding: 10 0 0 0;">
+<span style="color:#000000;font-size:12;"><strong>BAPCPA Documents</strong></span> 
+|~
+SELECT 
+'<table class="table table-condensed table-bordered" style="background-color:#FFFFFF;width:550px;"> 
+    <tbody> 
+        <tr> 
+            <td align="center" style="width:25px;">PDF</td> 
+            <td align="center" style="width:50px;">Court Doc.</td> 
+            <td style="width:75px;">Date Received</td> 
+            <td colspan="2" style="width:400px;">Document Type</td> 
+        </tr>' as FieldData, '1/1/1900' AS CreatedDate 
+UNION ALL 
+
+SELECT 
+        '<tr valign="top">' + 
+            '<td align="center" style="width:25px;">' + '<a target="_blank" href="http://printserver/imagestorage/' + tblDocumentDetail.ImageLocation + '">' + '<img src="images\pdficon.gif"></a></td>' + 
+            '<td align="center" style="width:50px;">' + ISNULL(tblCourtDocument.CourtDocumentNumber,'') + '</td>' + 
+            '<td style="width:75px;">' + Convert(VARCHAR, tblDocumentDetail.CreatedDate, 101) + '</td>' + 
+            '<td>' + tblDocumentFormType.FormTypeDescription + '</td>' + 
+        '</tr> 
+    </tbody>' as FieldData, CreatedDate 
+FROM tblDocumentDetail INNER JOIN 
+tblDocumentKeys ON tblDocumentDetail.DocumentID = tblDocumentKeys.DocumentID INNER JOIN 
+tblTrusteeDefaults ON tblDocumentDetail.TruCode = tblTrusteeDefaults.TruCode LEFT JOIN 
+tblCourtDocument ON tblDocumentDetail.DocumentID = tblCourtDocument.DocumentID INNER JOIN 
+tblDocumentSetup ON tblTrusteeDefaults.TruCode = tblDocumentSetup.TruCode INNER JOIN 
+tblDocumentFormType ON tblDocumentDetail.FormTypeCode = tblDocumentFormType.FormTypeCode INNER JOIN 
+tblDocumentFormSubType ON tblDocumentFormType.FormSubTypeCode = tblDocumentFormSubType.FormSubTypeCode 
+WHERE tblDocumentKeys.DocumentKey = {CaseID} 
+AND tblDocumentFormSubType.FormSubTypeAbbr = 'BAPCPA Documents' 
+
+UNION ALL 
+
+SELECT '</table>' AS FieldData, '9/9/9999' AS CreatedDate 
+ORDER BY CreatedDate 
+~|
+</div>
+<p style="clear: both;"></p> 
+</div> 
+</div> 
+</div>
