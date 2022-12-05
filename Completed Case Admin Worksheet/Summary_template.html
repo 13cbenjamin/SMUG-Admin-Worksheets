@@ -1,0 +1,69 @@
+<div class="well"> 
+    <h4>Cases Ready for Cutoff</h4>  
+    <table class="table table-bordered" style="width:auto;background:#FFFFFF;"> 
+        <thead> 
+            <tr> 
+                <td>Current User:</td> 
+                <td>|:UserName:|</td> 
+                <td>Current Date:</td> 
+                <td>|:ShortDate:|</td> 
+                <td>Cases Closed:</td>
+                <td>|~Select Count(CD.CaseID) as FieldData from tblCaseData as CD
+                    join vwCRMainCase as MC on CD.CaseID = MC.CaseID
+                     WHERE MC.CaseDisposition = 'C' 
+                         and CD.MonthsRemainingInPlan <= 4
+                         and (MC.CloseCode = 'J' OR MC.CloseCode = 'F' OR MC.CloseCode = 'X' OR MC.CloseCode = 'N')
+                         and MC.ClosedDate >= Cast(GetDate() as Date)
+                         and CD.ConfirmationDate <> '1/1/1900'
+                         and dbo.udfGetWorksheetData('-8888888', 208, 'CheckBox', CONCAT(CONVERT(VARCHAR, CD.CaseID), '03'), 0) = 'true'~|</td>
+            </tr>
+            <tr>
+                <td colspan="2"><a class="btn btn-success" onclick="WCopenWindow('PleaseWaitStatic.aspx?prog=setform.aspx?&amp;qs=progskip=~&vert;rpt=TAC_Report_Completing_Cases','UserForms_651',',scrollbars,resizable','');return false;" href="javascript:void(0)">
+                                        PRINT
+                                    </a>
+</td>
+<td colspan="4">
+To copy case numbers, Click <b>Print</b>, then <b>Create Export File</b> -> Choose <b>MS Excel</b> -> Choose <b>View Report after Creation</b>
+</td>
+            </tr>
+        </thead> 
+    </table> 
+    </div> 
+    <div class="container-fluid"> 
+    <table id="table_id" class="table table-striped table-bordered table-responsive"> 
+        <thead class="thead-light"> 
+            <tr> 
+                <th scope="col">Case #</th> 
+                <th scope="col">Debtor(s)</th> 
+                <th scope="col">Comment1</th>
+                <th scope="col">Comment2</th>
+                <th scope="col">Notes</th>
+            </tr> 
+        </thead> 
+
+                |~Select '
+                <tbody><tr>
+  
+        <td scope="row"><a href="javascript:WCenableScreenOverflow()" style="cursor:pointer;color:black;font-size:1.2em;" onclick="WCopenWindow(''PleaseWaitStatic.aspx?prog=SetInqCase.aspx?&qs=xwin=6|qcaseid=' + cast(cd.CaseID as varchar) + '|progskip=~'',''Query61'','',scrollbars,resizable,'',''All'')">' + CD.CaseNumber + '</a></td>
+        <td><span><strong>' + MC.Deb1LongName + '<br/>' + MC.Deb2LongName +'</strong></span></td>
+        <td><span><strong>' + ISNULL((select CONVERT(VARCHAR, Flag) from vwCaseFlags where FlagCodesID=3 and LinkTableKey = CD.CaseID), '') +'</strong></span></td>
+        <td><span><strong>' + ISNULL((select CONVERT(VARCHAR, Flag) from vwCaseFlags where FlagCodesID=4 and LinkTableKey = CD.CaseID), '') +'</strong></span></td>
+        <td><span>' + dbo.udfGetWorksheetData('-8888888', 208, 'TextBox', CONCAT(CONVERT(VARCHAR, CD.CaseID+100), '04'), 0) + '</span></td>
+                   </tr>
+</tbody>'
+     
+   AS FieldData
+   from tblCaseData as CD
+   join vwCRMainCase as MC on CD.CaseID = MC.CaseID
+    WHERE MC.CaseDisposition = 'C' 
+        and CD.MonthsRemainingInPlan <= 4
+        and (MC.CloseCode = 'J' OR MC.CloseCode = 'F' OR MC.CloseCode = 'X' OR MC.CloseCode = 'N')
+        and MC.ClosedDate >= Cast(GetDate() - 1 as Date) 
+        and CD.ConfirmationDate <> '1/1/1900'
+        and dbo.udfGetWorksheetData('-8888888', 208, 'CheckBox', CONCAT(CONVERT(VARCHAR, CD.CaseID), '03'), 0) = 'true'
+    Order By MC.Deb1LastName ASC~|
+
+
+        </table>
+</div>
+<!-- Updated 11/3/2022 to add close code 'N' to the list of applicable case types  Also updated crystal reports. -->
