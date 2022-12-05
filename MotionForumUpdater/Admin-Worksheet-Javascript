@@ -1,0 +1,50 @@
+//The only javascript function is used when Reset Worksheet button is called
+//This funtion sets the textboxes to "" and then calls another function
+//called UpdateEvent which creates to 2 event's to handle saving it to database when value changes
+//Since a TextBox and a CommentBox are used there is input Textbox and TextArea TextBox to capture both types. 
+//Worksheet ID: 42
+
+        $('textarea[name*="TextBox_"]').css('white-space' , 'pre-wrap').css('width', '100%');
+        $('textarea[name*="TextBox_"]').attr('rows', '10');
+        $('textarea[name*="TextBox_"]').addClass("form-control");
+
+function cleartextboxes() {
+            $("input:text").val("");
+$('textarea[name*="TextBox_"]').val('');
+UpdateEvent();
+        };
+
+function UpdateEvent(){
+    $('textarea[name*="TextBox_"]').each(function()
+    {
+     var element = document.getElementById(this.id); 
+                var event; 
+                if(typeof(Event) === 'function') 
+                { // non IE browsers 
+                    event = new Event('change'); 
+                }
+                else
+                { // IE 
+                    event = document.createEvent('Event'); 
+                    event.initEvent('change', true, true); 
+                } 
+                element.dispatchEvent(event);
+
+})
+$('input[name*="TextBox_"]').each(function()
+    {
+     var element = document.getElementById(this.id); 
+                var event; 
+                if(typeof(Event) === 'function') 
+                { // non IE browsers 
+                    event = new Event('change'); 
+                }
+                else
+                { // IE 
+                    event = document.createEvent('Event'); 
+                    event.initEvent('change', true, true); 
+                } 
+                element.dispatchEvent(event);
+
+})
+};

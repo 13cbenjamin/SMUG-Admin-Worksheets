@@ -1,0 +1,53 @@
+<table style="width:75%;border-collapse:collapse;">
+<tr> 
+  <th colspan="6"; style="background-color:#ffc400;color:#000000;border:thin solid gray;text-align:left;">DOCUMENTS</th>
+</tr>
+<tr>
+  <th style="width:10%;background-color:#DFDFDF;color:#000000;border:thin solid gray;text-align:left;">RECEIVED</th>
+  <th style="width:10%;background-color:#DFDFDF;color:#000000;border:thin solid gray;text-align:left;">DOCKET NUMBER</th>
+  <th style="width:80%;background-color:#DFDFDF;color:#000000;border:thin solid gray;text-align:left;">DESCRIPTION</th>
+</tr>
+<tr>
+|~SELECT 
+  '<tr>' +  
+  '<td style="border:thin solid gray;text-align:left;">' + CONVERT(VARCHAR(10),CreatedDate,101) + '</td>' + 
+  '<td style="border:thin solid gray;text-align:left;">' + CONVERT(VARCHAR,CourtsDocumentNumber,0) + '</td>' + 
+  '<td style="border:thin solid gray;text-align:left;">' + '<a target=_blank style="color:blue;font-size:11px;" href=http://imageserver/ImageStorage/' + replace(replace(ImageLocation, '\', '/'), ' ', '%20') 
++ '> ' + UPPER(Description) + '</a>' + '</td>' + 
+  '</tr>'  
+ AS FieldData 
+ FROM tblDocumentDetail 
+ WHERE Comment = '{CaseNumber}' 
+ AND FormTypeCode IN (23,40,53,67,75,91,105,109,124,128,132,156,188,226,237,279,407,456,460,627,1083,1102) 
+ ORDER BY CreatedDate ASC 
+~|
+</table>
+
+<br>
+
+<table style="width:75%;border-collapse:collapse;">
+<tr> 
+  <th colspan="6"; style="background-color:#ffc400;color:#000000;border:thin solid gray;text-align:left;">CLAIMS</th>
+</tr>
+<tr>
+  <th style="width:10%;background-color:#DFDFDF;color:#000000;border:thin solid gray;text-align:left;">RECEIVED</th>
+  <th style="width:10%;background-color:#DFDFDF;color:#000000;border:thin solid gray;text-align:left;">CLAIM NUMBER</th>
+  <th style="width:70%;background-color:#DFDFDF;color:#000000;border:thin solid gray;text-align:left;">DESCRIPTION</th>
+  <th style="width:10%;background-color:#DFDFDF;color:#000000;border:thin solid gray;text-align:right;">TOTAL CLAIMED</th>
+</tr>
+<tr>
+|~SELECT 
+  '<tr>' +  
+  '<td style="border:thin solid gray;text-align:left;">' + CONVERT(VARCHAR(10),ReceivedDate,101) + '</td>' + 
+  '<td style="border:thin solid gray;text-align:left;">' + CONVERT(VARCHAR,ClaimNumber,0) + '</td>' + 
+  '<td style="border:thin solid gray;text-align:left;">' + (SELECT + '<a target=_blank style="color:blue;font-size:11px;" href=http://imageserver/ImageStorage/' + replace(replace(ImageLocation, '\', '/'), ' ', '%20')
++ '> ' + UPPER(Description) + '</a>' AS FieldData FROM tblDocumentDetail dd WHERE dd.Comment = {CaseNumber} AND dd.FormTypeCode = 65 AND dd.DocumentID = cd.DocumentID ) + '</td>' + 
+  '<td style="border:thin solid gray;text-align:right;">$' + CONVERT(VARCHAR,TotalClaimed,1) + '</td>' +
+  '</tr>'  
+ AS FieldData 
+ FROM tblCourtDocument cd
+ WHERE cd.CaseNumber = {CaseNumber} 
+ AND cd.DocumentType = 'Proof of Claim' 
+ORDER BY cd.ReceivedDate ASC
+ ~|
+</table>

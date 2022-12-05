@@ -1,0 +1,67 @@
+--Working Version of Admin Worksheet Motion FOrum Updater 
+<div class="well"> 
+    <h4>Motion Forum Updater</h4>  
+    <table class="table table-bordered" style="width:auto;background:#FFFFFF;"> 
+        <thead> 
+            <tr> -- Create info table at top showing Current User info and the Date 
+                <td>Current User:</td> 
+                <td id="initials_187_1">|:UserInitials:|</td> 
+                <td>|:UserName:|</td> 
+            </tr> 
+            <tr> 
+                <td>Motion Calendar Date:</td> 
+                <td>|:ShortDate:|</td> 
+            </tr> 
+        </thead> 
+    </table> 
+    </div> 
+<div>
+--Create a button that will be used to push all info to the forum (Will be a Create PDF action so an update string can be used). 
+<button class="dt-button buttons-csv buttons-html5" tabindex="0" aria-controls="table_id" type="button"><span>Update Forum</span></button>
+--Create table that will data for each case
+--This table will be set to pull current date and then all cases that are set for 'TBH - To Be Heard' for today's date 
+</div>
+    <div style="width: auto;"> 
+    <table id="table_id" class="table table-bordered" style="width:auto;background:#FFFFFF;"> 
+        <thead> 
+            <tr> --Create table with 2 columns (Case Details and Forum Note column)
+                <th style="width:900px">Case Details</th> 
+                <th style="width:300px">Forum Note</th>
+            </tr> 
+        </thead> 
+            <tbody> -- Table body will format various data to pull info for each specific case. 
+            |~Select DISTINCT '<tr><td>' +
+                    '<h5>Case Number: ' + MC.CaseNumber + (Select 
+                    ' Debtor Last Name: ' + MC.DebtorLastName + '</br>' +
+                    ' Datty: ' + MC.DebtorAttorneyName + '</h5>' +
+                    '<h6> Motion being heard: ' + 
+                    ( -- Using For XML Path and the STUFF() function. Parse all matching matters for Case ID and display. 
+                        SELECT STUFF((select DISTINCT ' <br />' + MC2.Matter1 -- Create a line break before each Motion 
+                        from tblMatterCalendar as MC2
+                        Inner Join tblMatterCalendar as cal2 on MC2.MatterCalendarID = cal2.MatterCalendarID
+                        WHere MC2.CaseNumber = MC.caseNumber and MC2.CalendarDate = CONVERT(Datetime,'2020-08-20')
+                        Order By 1
+                        For XML PATH('Matter1'), TYPE).value('.', 'VARCHAR(8000)'),1,0,'') -- 1,0,'' says to enter return after each 1, 0 skips no characters
+                    ) + '</h6></br>' +
+                    '<h6>Matter Notes: ' +
+					( -- Using FOr XML Path and the STUFF() function. Parse all matching Notes for CaseID and display
+                        SELECT STUFF((select DISTINCT ' <br />' + CONVERT(VARCHAR(8000),MC3.Notes)
+                        from tblMatterCalendar as MC3
+                        Inner Join tblMatterCalendar as cal3 on MC3.MatterCalendarID = cal3.MatterCalendarID
+                        WHere MC3.CaseNumber = MC.caseNumber and MC3.CalendarDate = CONVERT(Datetime,'2020-08-20')
+                        Order By 1
+                        For XML PATH('Notes'), TYPE).value('.', 'VARCHAR(8000)'),1,0,'')
+                    )  +
+                '</h6></td>' + -- Who Appeared will be appended into the Forum Note (Ex. MSL and Datty appeared)
+               '<td>' + 'Who Appeared:' + '[TextBox' + CONVERT(VARCHAR, MC.CaseNumber) + '.300]' + '</br>' + 'Forum Note [CommentBox' + CONVERT(VARCHAR, MC.CaseNumber) + '.500]' + '</td>' +
+             '</tr>') AS FieldData
+            FROM tblMatterCalendar as MC
+            where MC.MatterCalendarType = 1 -- Only type 1 matters 
+            and MC.CalendarDate like CONVERT(Datetime, '2020-08-20')~| -- Todays date
+            -- ### Still need to add selector for TBH cases ###
+
+            </tbody> 
+
+        </table>
+        </div> 
+

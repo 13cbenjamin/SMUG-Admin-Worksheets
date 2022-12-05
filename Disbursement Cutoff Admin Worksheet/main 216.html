@@ -1,0 +1,704 @@
+<div class="container">
+    
+    <div style="width: 100%; justify-content: center; text-align: center; font-size: 2rem; background-color: whitesmoke; padding: 20px; border-radius: 1em; margin-left: auto; margin-right: auto; margin-bottom: 1em;">
+        <span>Disbursement Worksheet 2022</span>
+    </div>
+
+    <section id="table0">
+        <table class="table table-bordered">
+            <thead id="section0Header" style="background-color: #a3a3ff;">
+                <tr id="section2">
+                    <td colspan="2" style="font-size: medium;text-align: center; color: whitesmoke;">Cutoff Info</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Computer User Initials: [TextBox1.150]</td>
+                    <td>Check User Initials: [TextBox2.150]</td>
+                </tr>
+                <tr>
+                    <td>Cutoff Date: [TextBox3.150]</td>
+                    <td>Start Time: [TextBox4.150]</td>
+
+                </tr>
+                <tr>
+                    <td><a onclick="WCgoToApp('CaseWorksheet.aspx?xwin=&amp;wstype=62&standalone=1&cid=-8888888')" title="Refresh" class="btn btn-primary" style="color: #FFFFFF" tabindex="-1">Refresh</a></td>
+                    <td><a onclick="if(!(confirm('Are you sure you want to remove all the data from this worksheet?  This action cannot be undone.')))return false;WCgoToApp('CaseWorksheet.aspx?clear=1&amp;xwin=&amp;wstype=62&standalone=1&cid=-8888888')" title="Reset Worksheet" class="btn btn-danger" style="color:#FFFFFF;" tabindex="-1">Reset Worksheet</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    
+    <section id="table">
+        <table class="table table-bordered">
+            <thead id="section1Header" style="background-color: #121259;">
+                <tr id="section1">
+                    <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 1 - Disable Users</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>                  
+                    <li>Email Staff to get out of TNG and provide Inquiry Password by clicking <input id="sendEmailButton" class="link bg-info p-2 text-white " type="button" value="Send Email"/></li>
+                            
+                    </li>
+                    <li>Disable Users</li>
+                    <ol> 
+                        <li>Click <a href="javascript:WCenableScreenOverflow()" onclick="WCsetApplication('clicked_'+WCszUC+'_'+WCszWN+'!1');WCopenWindow('PleaseWait.aspx?prog=UserTemp','<%= WindowSuffix %>',',scrollbars,resizable','All')" class="link bg-info p-2 text-white " style="cursor: pointer; cursor: pointer;">Temporary Disable All Users</a></li>
+                        <!-- <li><a onclick="WCopenWindow('PleaseWait.aspx?prog=UserTemp,PopWindow')" title="Temporarily Disable/Enable Users" class="btn btn-info" tabindex="-1">Temporarily Disable/Enable Users</a></li>  -->
+                        <li>Click Set Temporary Disable on All Other Users</li>
+                        <li>Click OK</li>
+                        <li>Close that window</li>
+                    </ol>
+                    <li> Enable Inquiry User</li>
+                    <ol>
+                        <li>Click <a href="javascript:WCenableScreenOverflow()" onclick="WCsetApplication('clicked_'+WCszUC+'_'+WCszWN+'!1');WCopenWindow('PleaseWait.aspx?prog=Users','<%= WindowSuffix %>',',scrollbars,resizable','All')" class="link bg-info p-2 text-white " style="cursor: pointer; cursor: pointer;">Maintain Users</a></li>
+                        <li>Click List Active Users</li>
+                        <li>Click Inquiry</li>
+                        <li>Uncheck Temporary Disable</li>
+                        <li>Click Submit</li>
+                        <li>Close that window</li>
+                    </ol>
+                </td>
+                </tr>
+                <tr>
+                    <td>Mark Complete: [CheckBox901]</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="table2">
+        <table class="table table-bordered">
+            <thead style="background-color: #121259;">
+                <tr id="section2">
+                    <td colspan="2" style="font-size: medium;text-align: center; color: whitesmoke;">Step 2 - Pre-Disbursement Backup</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="btn btn-info" id="showDisbursementInstructionVideo">Show Example</span> 
+                        <div id="disbursementvideo" class="collapse">
+                            <img src="tac_images/disbursementbackup.gif" loading="lazy" width="800" height="400" title="Disbursement Instructions"/>
+                        </div> 
+
+                </td>
+                <td>
+                    <span class="btn btn-secondary" id="showOldDisbursementInstructions" title="If backup fails, click here for alternate backup instructions">Alternate Disbursement Instructions</span></td>
+                </tr>
+                <tr id="oldDisbursementInstructions" class="collapse">
+                    <td colspan="2">
+                        <ul>
+                            <li>Open Microsoft SQL Server Management Studio using icon on desktop</li>
+                            <li>Click Connect</li>
+                            <li>On the left, click the + icon to expand Dataserver, Then Management, Then Maintenance Plans</li>
+                            <li>Right-Click on Disbursement Backup and choose Execute</li>
+                            <li>Wait until status says Success</li>
+                            <li>Click Close</li>
+                            <li>Return to TNG and enter time the backup finished</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <ol>
+                            <li>Double-Click "Disb Backup" icon on desktop</li>
+                            <li>Click <b>Start</b></li>
+                            <li style="display: flex;"> <b>Enter Backup Time from Last Backup on Disb Backup Program: </b> <span style="width: 10px;"></span> [TextBox200.150]</li>
+                        </ol>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2">Mark Complete: [CheckBox902]</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="table3">
+        <table class="table table-bordered">
+            <thead style="background-color: #121259;">
+                <tr id="section3">
+                    <td colspan="3" style="font-size: medium;text-align: center; color: whitesmoke;">Step 3 - Change Disbursement Parameters</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>                  
+                    <ol> 
+                      <!-- <li>Click <b>Home</b></li> -->
+                      <li>Click <a href="javascript:WCenableScreenOverflow()" onclick="WCsetApplication('clicked_'+WCszUC+'_'+WCszWN+'!1');WCopenWindow('PleaseWait.aspx?prog=MaintainFile&qs=prog=MainMenu|fc=tblDisbursementInputs','<%= WindowSuffix %>',',scrollbars,resizable','All')" class="link bg-info p-2 text-white " style="cursor: pointer; cursor: pointer;">Disbursement Calculation Inputs</a></li>
+                      <li>Click on Disbursement ID 1 (Note: There should only be one item to click on)</li>
+                      <li>Check the box for <b>Initialize Disbursement Tables</b></li>
+                      <li>Check the box for <b>Update Disbursement</b></li>
+                      <li>Enter the Cutoff date in <b>Disbursement Date</b></li>
+                      <li>Uncheck the box for <b>Lock Disbursement Tables</b></li>
+                      <li><div style="display: flex;"> Enter the Cutoff date in <b style="padding: 0 10"> Check Date </b> [TextBox300.150]</div></li>
+                      <li><div style="display: flex;">Enter EFT date in <b style="padding: 0 10"> Effective EFT Date </b> <img border="0" style="cursor:pointer; padding: 0 10;" src="images/moreinfo.gif" width="15" height="15" title="The EFT Effective Date is always the 3rd business day following cutofff. Example: If cutoff is Friday, July 29th, then EFT Effective date is Wednesday 8/3. Pay spescial attention if Monday is a federal holiday to count business days accurately"/> [TextBox301.150]</div></li>
+                      <li>Click Submit</li>
+                      <li>Close that window</li>
+                    </ol>
+                </td>
+                </tr>
+                <tr>
+                    <td>Mark Complete: [CheckBox903]</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+        <section id="table4">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section4">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 4 - Verify Starting Check Number</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <li> <div style="display: flex; padding: 0 10;">Ask Check User the First Check Number in Printer: <span style="width: 10px;"></span> [TextBox400.150] </div></li>
+                        </br>
+                            <li>First Check number in TNG - <b>|~Select ComputerCheckNumber as FieldData from tblCheckSetup ~| </b></li>
+                            <li><b>Verify that the first check numbers match </b><br><span style="color: red">Stop If Mismatch</span></li>
+                          
+                        </ol>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox904]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="table5">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section5">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 5 - Pre-Disbursement Reports</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <!-- <li>Click <b>Home</b></li> -->
+                            <li>Click <a class="link bg-info p-2 text-white " href="javascript:WCenableScreenOverflow()" onclick="WCsetApplication('clicked_'+WCszUC+'_'+WCszWN+'!1');WCopenWindow('PleaseWaitStatic.aspx?prog=setPSProg.aspx?prog=ReportAutorunStart.aspx','PrintProgram_651',',scrollbars,resizable','');return false;" href="javascript:void(0)">Report Autorun Program </a></li>
+                            <li>Select Report Group <b>Pre-Disbursement Reports</b></li>
+                            <li>Click <b>Run Reports</b></li>
+                            </br>
+                            <li>Click <a href="javascript:WCenableScreenOverflow()" onclick="WCsetApplication('clicked_'+WCszUC+'_'+WCszWN+'!1');WCopenWindow('PleaseWait.aspx?prog=SetForm&qs=rpt=BSS_Report_BOH','<%= WindowSuffix %>',',scrollbars,resizable','All')" class="link bg-info p-2 text-white " style="cursor: pointer; cursor: pointer;">Balance On Hand Report</a></li>
+                            <li>Check the box for <b>Open Cases</b></li>
+                            <li>Check the box for <b>Closed Cases</b></li>
+                            <li>Check the box for <b>Unconfirmed Cases</b></li>
+                            <li>Check the box for <b>Confirmed Cases</b></li>
+                            <li>Select <b>Create Export File</b></li>
+                            <li>Select <b>MS Excel</b></li>
+                            <li>Click <b>OK</b></li>
+                        </ol>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox905]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="table6">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section6">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 6 - Check Balance Update</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <li>Click <a href="javascript:WCenableScreenOverflow()" onclick="WCsetApplication('clicked_'+WCszUC+'_'+WCszWN+'!1');WCopenWindow('PleaseWait.aspx?prog=ClaimBalance','<%= WindowSuffix %>',',scrollbars,resizable','All')" class="link bg-info p-2 text-white " style="cursor: pointer; cursor: pointer;">Check Balance Update</a></li>
+                            <li>Wait for this to finish</li>
+                            <li>Click <a href="javascript:WCenableScreenOverflow()" onclick="WCsetApplication('clicked_'+WCszUC+'_'+WCszWN+'!1');WCopenWindow('PleaseWait.aspx?prog=CheckBalanceDisplay','<%= WindowSuffix %>',',scrollbars,resizable','All')" class="link bg-info p-2 text-white " style="cursor: pointer; cursor: pointer;">Check Balance Display</a></li>
+                            <li>No cases should be listed</li>
+                            <li>Click <b>OK</b></li>
+                            <li>Clear the tickles created by the check balance update</li>
+                        </ol>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox906]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        
+        <section id="table7">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section7">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 7 - Payee Step Payment Update</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <!-- <li>Click <b>Home</b></li> -->
+                            <li>Click <a href="javascript:WCenableScreenOverflow()" onclick="WCsetApplication('clicked_'+WCszUC+'_'+WCszWN+'!1');WCopenWindow('PleaseWait.aspx?prog=PayeeStepUpdate','<%= WindowSuffix %>',',scrollbars,resizable','All')" class="link bg-info p-2 text-white " style="cursor: pointer; cursor: pointer;">Payee Step Payment Update</a></li>
+                            <li>Click <b>OK</b></li>
+                            <li>Run Through Date should default to <b>Cutoff Date</b></li>
+                            <li>Click <b>OK</b></li>
+                            <li>Clear the tickles created by the payee step payment update program</li>
+                        </ol>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox907]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="table8">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section7">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 8 - Disbursement Calculation</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <!-- <li>Click <b>Home</b></li> -->
+                            <li>Click <a href="javascript:WCenableScreenOverflow()" onclick="WCsetApplication('clicked_'+WCszUC+'_'+WCszWN+'!1');WCopenWindow('PleaseWait.aspx?prog=DisbursementStart','<%= WindowSuffix %>',',scrollbars,resizable','All')" class="link bg-info p-2 text-white " style="cursor: pointer; cursor: pointer;">Disbursement Calculation</a></li>
+                            <li>Verify that all items have been completed by checking each box at the bottom</li>
+                            <li>Click <b>Update</b></li>
+                            <li>This process can take anywhere from 5-20 minutes to complete</li>
+                            <li> <div style="display: flex;"> Start Time <span style="width: 10px;"></span> [TextBox800.150]</div></li>
+                            <li> <div style="display: flex;">End Time <span style="width: 10px;"></span> [TextBox801.150]</div></li>
+                        </ol>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox908]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="table9">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section9">
+                        <td colspan="2" style="font-size: medium;text-align: center; color: whitesmoke;">Step 9 - Post-Disbursement Backup</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>
+                            <span class="btn btn-info" id="showDisbursementInstructionVideo2">Show Example</span> 
+                            <div id="disbursementvideo2" class="collapse">
+                                <img src="tac_images/disbursementbackup.gif" loading="lazy" width="800" height="400" title="Disbursement Instructions"/>
+                            </div> 
+                    </td>
+                    <td>
+                        <span class="btn btn-secondary" id="showOldDisbursementInstructions2" title="If backup fails, click here for alternate backup instructions">Alternate Disbursement Instructions</span></td>
+                    </tr>
+                    <tr id="oldDisbursementInstructions2" class="collapse">
+                        <td colspan="2">
+                            <ul>
+                                <li>Open Microsoft SQL Server Management Studio using icon on desktop</li>
+                                <li>Click Connect</li>
+                                <li>On the left, click the + icon to expand Dataserver, Then Management, Then Maintenance Plans</li>
+                                <li>Right-Click on Disbursement Backup and choose Execute</li>
+                                <li>Wait until status says Success</li>
+                                <li>Click Close</li>
+                                <li>Return to TNG and enter time the backup finished</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <ol>
+                                <li>Double-Click "Disb Backup" icon on desktop</li>
+                                <li>Click <b>Start</b></li>
+                                <li> <div style="display: flex;"><b>Enter Backup Time from Last Backup on Disb Backup Program: </b> <span style="width: 10px;"></span> [TextBox900.150]</div></li>
+                            </ol>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="2">Mark Complete: [CheckBox909]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="table10">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section10">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 10 - Enable Users</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <!-- <li>Click <b>Home</b></li> -->
+                            <li>Click <a href="javascript:WCenableScreenOverflow()" onclick="WCsetApplication('clicked_'+WCszUC+'_'+WCszWN+'!1');WCopenWindow('PleaseWait.aspx?prog=UserTemp','<%= WindowSuffix %>',',scrollbars,resizable','All')" class="link bg-info p-2 text-white " style="cursor: pointer; cursor: pointer;">Enable Users</a></li>
+                            <li>Click <b>Remove Temporary Disable on All other users</b></li>
+                            <li>Click <b>OK</b></li>
+                            <li>Email staff that it's OK for them to log back in by clicking this button</li>
+                            <input id="cutoffDoneEmailButton" class="link bg-info p-2 text-white " type="button" value="Send Email"/>
+                        </ol>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox910]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="table11">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section11">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 11 - Post-Disbursement Reports</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <!-- <li>Click <b>Home</b></li> -->
+                            <li>Click <a class="link bg-info p-2 text-white " onclick="WCopenWindow('PleaseWaitStatic.aspx?prog=setPSProg.aspx?prog=ReportAutorunStart.aspx','PrintProgram_651',',scrollbars,resizable','');return false;" href="javascript:void(0)">Report Autorun Program </a></li>
+                            <li>Select Report Group <b>Post-Disbursement Reports</b></li>
+                            <li>Click <b>Run Reports</b></li>
+                            <li>Done: [CheckBox111]</li>
+                        </ol>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <!-- <li>Click <b>Home</b></li> -->
+                            <li>Click <a href="javascript:WCenableScreenOverflow()" onclick="WCsetApplication('clicked_'+WCszUC+'_'+WCszWN+'!1');WCopenWindow('PleaseWait.aspx?prog=SetForm&qs=rpt=BSS_Report_BOH','<%= WindowSuffix %>',',scrollbars,resizable','All')" class="link bg-info p-2 text-white " style="cursor: pointer; cursor: pointer;">Balance On Hand Report</a></li>
+                            <li>Check the box for <b>Open Cases</b></li>
+                            <li>Check the box for <b>Closed Cases</b></li>
+                            <li>Check the box for <b>Unconfirmed Cases</b></li>
+                            <li>Check the box for <b>Confirmed Cases</b></li>
+                            <li>Select <b>Create Export File</b></li>
+                            <li>Choose <b>MS Excel</b></li>
+                            <li>Click <b>OK</b></li>
+                            <li>Done: [CheckBox112]</li>
+                        </ol>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <!-- <li>Click <b>Home</b></li> -->
+                            <li>Click <a href="javascript:WCenableScreenOverflow()" onclick="WCsetApplication('clicked_'+WCszUC+'_'+WCszWN+'!1');WCopenWindow('PleaseWait.aspx?prog=SetForm&qs=rpt=TAC_HBMR_System_Stats','<%= WindowSuffix %>',',scrollbars,resizable','All')" class="link bg-info p-2 text-white " style="cursor: pointer; cursor: pointer;">Month Ending System Stats</a></li>
+                            <li>Enter <b>Cutoff Date</b></li>
+                            <li>Select <b>Create Export File</b></li>
+                            <li>Choose <b>MS Excel</b></li>
+                            <li>Click <b>OK</b></li>
+                            <li>Done: [CheckBox113]</li>
+                        </ol>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox911]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="table12">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section12">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 12 - Check Printing</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> 
+                            Info: <img border="0" style="cursor:pointer" src="images/moreinfo.gif" width="15" height="15" title="Certain creditors, such as international creditors, may have an alpha sort starting with “zzz”.  These checks will print at the end of the creditor checks and will need to be set aside so that international postage may be applied. "/>                 
+                        <ol> 
+                            <li>In TNG, Click <b>Home</b></li>
+                            <li>Click <b>Disbursement Check Printing</b></li>
+                            <li>Select <b>Michael G. Malaier</b></li>
+                            <li><div style="display: flex;">Beginning Check Number: <span style="width: 10px;"></span> [TextBox121.150] </div></li>
+                            <li>Select Printer <b>PL_E60165</b></li>
+                            <li>Wait for Checks to complete printing. If there is an issue with check printing, stop the printer immediately and contact Chris Benjamin</li>
+                            <li><div style="display:flex;">Last Printed Number: <span style="width: 10px;"></span> [TextBox122.150]</div></li>
+                            <li><div style="display:flex;">Next Good Check Number: <span style="width: 10px;"></span> [TextBox123.150]</div></li>
+                            <li>Click <b>OK</b></li>
+                        </ol>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ol>
+                                <li>Checks for bankruptcy court must be pulled so Ann can process online</li>
+                                <li>Check Pulled? [CheckBox121]</li>
+                            </ol>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox912]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="table13">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section13">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 13 - Disbursement Check Update</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <li>Click <a class="link bg-info p-2 text-white " onclick="WCopenWindow('PleaseWait.aspx?prog=DisbCheckPrinting','PrintProgram_651',',scrollbars,resizable','');return false;" href="javascript:void(0)">Disbursement Check Printing </a></li>
+                            <li>Select <b>Michael G. Malaier</b></li>
+                            <li>Click <b>Update Checks</b></li>
+                            <li>Click <b>OK</b></li>
+                        </ol>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox913]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="table14">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section14">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 14 - Handbook Management Reports</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <!-- <li>Click <b>Home</b></li> -->
+                            <li>Click <a class="link bg-info p-2 text-white " onclick="WCopenWindow('PleaseWaitStatic.aspx?prog=setPSProg.aspx?prog=ReportAutorunStart.aspx','PrintProgram_651',',scrollbars,resizable','');return false;" href="javascript:void(0)">Report Autorun Program </a></li>
+                            <li>Select Report Group <b>Handbook Management Reports</b></li>
+                            <li>Click <b>Run Reports</b></li>
+                        </ol>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox914]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="table15">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section15">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 15 - Post-Disbursement Check Printing Reports</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <!-- <li>Click <b>Home</b></li> -->
+                            <li>Click <a class="link bg-info p-2 text-white " onclick="WCopenWindow('PleaseWaitStatic.aspx?prog=setPSProg.aspx?prog=ReportAutorunStart.aspx','PrintProgram_651',',scrollbars,resizable','');return false;" href="javascript:void(0)">Report Autorun Program </a></li>
+                            <li>Select Report Group <b>Post-Disbursement Check Printing Reports</b></li>
+                            <li>Click <b>Run Reports</b></li>
+                        </ol>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox915]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="table16">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section16">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 16 - Final Reports</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <!-- <li>Click <b>Home</b></li> -->
+                            <li>Click <a class="link bg-info p-2 text-white " onclick="WCopenWindow('PleaseWait.aspx?prog=SetForm&qs=rpt=BSS_Register_Disbursement_Check_Final','PrintProgram_651',',scrollbars,resizable','');return false;" href="javascript:void(0)">Disbursement Check Register - Post Update </a></li>
+                            <li>Enter the <b>Cutoff Date</b></li>
+                            <li>Check the box for <b>EFT Checks</b></li>
+                            <li>Check the box for <b>Paper Checks</b></li>
+                            <li>Select <b>Create Export File</b></li>
+                            <li>Choose <b>PDF</b></li>
+                            <li>Click <b>OK</b></li>
+                            <li>Done: [CheckBox161]</li>
+                        </ol>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>                  
+                            <ol> 
+                                <!-- <li>Click <b>Home</b></li> -->
+                                <li>Click <a class="link bg-info p-2 text-white " onclick="WCopenWindow('PleaseWait.aspx?prog=SetForm&qs=rpt=BSS_Register_Disbursement_Check_Final_EFT','PrintProgram_651',',scrollbars,resizable','');return false;" href="javascript:void(0)">Disbursement Check Register - Post Update - EFT </a></li>
+                                <li>Enter the <b>Cutoff Date</b></li>
+                                <li>Select <b>Print and Create Export File</b></li>
+                                <li>Choose <b>PDF</b> as export type</li>
+                                <li>Select printer <b>Server Room</b></li>
+                                <li>Click <b>OK</b></li>
+                                <li>Done: [CheckBox162]</li>
+                            </ol>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <!-- <li>Click <b>Home</b></li> -->
+                            <li>Click <a class="link bg-info p-2 text-white " onclick="WCopenWindow('PleaseWait.aspx?prog=SetForm&qs=rpt=BSS_Report_Outstanding_Check_By_Date','PrintProgram_651',',scrollbars,resizable','');return false;" href="javascript:void(0)">Outstanding Check Report - As of Date </a></li>
+                            <li>Enter <b>Cutoff Date</b></li>
+                            <li>Select <b>Create Export File</b></li>
+                            <li>Choose <b>MS Excel</b></li>
+                            <li>Click <b>OK</b></li>
+                            <li>Done: [CheckBox163]</li>
+                        </ol>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox916]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="table17">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section17">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 17 - Change Check Number</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <li><div style="display: flex;">Next Valid Check Number:<span style="width: 10px;"></span> [TextBox171.150]</div></li>
+                            <!-- <li>Click <b>Home</b></li> -->
+                            <li>Click <a class="link bg-info p-2 text-white " onclick="WCopenWindow('PleaseWait.aspx?prog=CheckSetup','PrintProgram_651',',scrollbars,resizable','');return false;" href="javascript:void(0)">Check Setup </a></li>
+                            <li>Enter Next Good Check Number in the <b>Computer Checks Check Number Field</b></li>
+                            <li>Click <b>Exit</b></li>
+                        </ol>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox917]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+        <section id="table18">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section18">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 18 - Electronic Funds Transfer</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>              
+                        <ol>
+                            <li>Click: <a target="_blank" class="btn btn-info" href="https://achfraudcontrol.truist.com/">Truist EFT Site</a></li> 
+                            <li>Login with your <b>Company ID, UserID, and Password</b></li>
+                            <li>Click <b>Control Totals</b></li>
+                            <li>Click <b>Add</b></li>
+                            <li>Select Application <b>Choose only available option</b></li>
+                            <li>Credit amount <b>Enter the total from the bottom of reported printed in Step 16</b> [TextBox190.150]</li>
+                            <li>Debit Amount <b>Enter 0.00</b></li>
+                            <li>Click <b>Save</b></li>
+                            <li><div style="display: flex;"> Verified by: <span style="width: 10px;"></span> [TextBox191.75] <span style="padding: 0 10; width: 10px; text-align: center;"> & </span> [TextBox192.75]</div></li>
+                        </ol>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox918]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="table20">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section20">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 19 - Create Report</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Notes / Comments </br>
+                            [CommentBox500.500]</td>
+                    </tr>
+                    <tr>
+                        <td><a class="btn btn-success" onclick="WCopenWindow('PleaseWaitStatic.aspx?prog=setform.aspx?&amp;qs=progskip=~&vert;rpt=TAC_Disbursement_Worksheet_Report','UserForms_651',',scrollbars,resizable','');return false;" href="javascript:void(0)">
+                            Create Disbursement Report
+                        </a> | <b>Choose Create Export File -> Format: PDF -> Click OK </b></td>
+                        
+                    </tr>
+                    <tr>
+                        <td>Mark Complete: [CheckBox920]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="table19">
+            <table class="table table-bordered">
+                <thead style="background-color: #121259;">
+                    <tr id="section19">
+                        <td colspan="1" style="font-size: medium;text-align: center; color: whitesmoke;">Step 20 - Closing Date Calculation</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>                  
+                        <ol> 
+                            <li>Click <b>Home</b></li>
+                            <li>Click <b>Close Date Calculation</b></li>
+                            <li>Click <b>Begin</b></li>
+                            <li><b>Wait for the percentage complete to update to at least 1%, <span style="color: red">Not close TNG, Do Not Log Out, LOCK computer (Win + L).</span> </b></li>
+                        </ol>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Check Once Started: [CheckBox919]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+</div>

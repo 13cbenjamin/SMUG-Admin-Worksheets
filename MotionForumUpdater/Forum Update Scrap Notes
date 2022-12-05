@@ -1,0 +1,210 @@
+
+
+--#### I need to figure out how to get Case number from tblCaseWorksheetData 
+--THen push that through the udfGetWOrksheetData to grab the latest daa. 
+
+--SELECT 1; -- Select 1 record at a time 
+Create Table #tmptbl( CaseID INT, WHO VARCHAR(MAX), NOTE VARCHAR(MAX))
+
+-- Used in the update after each Insert Into #tmptbl to update first column with section number
+DECLARE @WORKSHEETID INT; --Declare WOrksheet integer 
+SET @WORKSHEETID = 187; -- Set worksheet id, useful for re-using code in future projects 
+--Start Update #tmptbl section 
+INSERT INTO #tmptbl (CaseID, WHO, NOTE) -- Setup the HEADER_ROW to separate sections in the TmpTable 
+-- Gets value in First textbox of the section. Accounts for all possible boxes being filled out (7 Columns and 10 rows) 
+--If the first box is empty then it skips the row. 
+SELECT dbo.udfGetWorksheetData('-8888888',@WORKSHEETID,'TextBox',111,0), (SELECT dbo.udfGetWorksheetData('-8888888',@WORKSHEETID,'TextBox',112,0)), (SELECT CASE WHEN dbo.udfGetWorksheetData('-8888888',@WORKSHEETID,'CheckBox',111,0) = CAST(1 AS BIT) then 'Original ' ELSE '' end)
+WHERE dbo.udfGetWorksheetData('-8888888',@WORKSHEETID,'CheckBox','111',0) <> '' 
+--Update NULL fields 
+UPDATE #tmptbl SET SECTION = 111 WHERE SECTION IS NULL; 
+
+
+
+
+--Setup Variables for first case 
+Declare @x INT;
+Set @x  = 1;
+Declare @Case INT;
+Set @Case = (Select CaseNumber from #tmptbl where Rownums = @x)
+--Create Initial Forum Entry
+INSERT tblForum (CaseID, Header, UserCodeID, EventDate, LinkForumID, ForumHeadingID, InitialUserID ) 
+SELECT @Case, tblForumHeading.Description, 65, GetDate(), 0, tblForumHeading.ForumHeadingID, 1 
+FROM tblForumHeading 
+WHERE tblForumHeading.ForumHeadingID = 5 
+AND NOT EXISTS 
+( SELECT tblForum.ForumID 
+FROM tblForum 
+WHERE tblForum.CaseID = @Case
+AND tblForum.LinkForumID = 0 
+AND tblForum.ForumHeadingID = tblForumHeading.ForumHeadingID );
+
+--Insert into tblFOorum 
+INSERT tblForum ( CaseID, Header, Detail, UserCodeID, EventDate, LinkForumID, ForumHeadingID, InitialUserID ) 
+Select @Case, 'Motion Forum Update - From Worksheet', 
+--Section 111 Header 
+ISNULL((SELECT 'Who Appeared: ' + (SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x),0)) + '</br>' +
+        'Forum Note: ' + (SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x)+10000,0))),'')
+, 65, GetDate(), F.ForumID, F.ForumHeadingID, 65
+FROM tblForum F WHERE F.CaseID = @Case AND F.ForumHeadingID = 5 AND F.LinkForumID = 0;
+--End Forum Update Section 
+
+
+
+--Who APpeared? 
+--[TextBox' + CONVERT(VARCHAR, MC.CaseNumber) + '.300] 
+
+--Forum Note 
+--'Forum Note [CommentBox' + CONVERT(VARCHAR, MC.CaseNumber) + '.500]'
+
+
+
+Drop Table #tmptbl
+
+--Create Table #tmptbl (vol1 VARCHAR);
+Select DISTINCT CaseNumber, RANK() OVER(order by CaseNumber ASC) as Rownums into #tmptbl from tblMatterCalendar 
+where MatterCalendarType = 1 
+and CalendarDate like CONVERT(datetime, '2020-08-20')
+
+Select * from #tmptbl 
+
+Select * from tblCaseWorksheetData where CaseWorksheetTemplateID = 187
+
+Select CaseID from vwCRMainCase where casenumber = 2041460
+
+
+Declare @x INT;
+Set @x  = 1;
+Select
+ISNULL((SELECT 'Who Appeared: ' + (SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x),0)) + '</br>' +
+        'Forum Note: ' + (SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x)+10000,0))),'')
+
+
+
+ISNULL((SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x)+10000,0)),'') +
+ISNULL((SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x)+10000,0)),'') +
+ISNULL((SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x)+10000,0)),'') +
+ISNULL((SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x)+10000,0)),'') +
+ISNULL((SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x)+10000,0)),'') +
+ISNULL((SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x)+10000,0)),'')
+
+
+--Fully WOrking Script Below - Works with 1 case 
+
+--Setup Temp Table by dropping it and creating a new one
+Drop Table #tmptbl
+
+--Create Table #tmptbl (vol1 VARCHAR);
+Select DISTINCT MC.CaseNumber, CD.CaseID, RANK() OVER(order by MC.CaseNumber ASC) as Rownums into #tmptbl 
+from tblMatterCalendar as MC
+JOIN tblCaseData as CD on MC.CaseNumber = CD.CaseNumber
+where MatterCalendarType = 1 
+and CalendarDate like CONVERT(datetime, '2020-08-20')
+
+Select * from #tmptbl
+
+--Setup Variables for first case 
+Declare @x INT; --x will be used to track current row number for iterating through motion calender 
+Declare @Casenums INT; --Casenums is the casenumber without hyphen, used to grab the text box value 
+Declare @Caseids INT; --Caseids is the Case ID joined from the matter calender to get the caseid using the case number. 
+Set @x  = 1;
+Set @Casenums = (Select CaseNumber from #tmptbl where Rownums = @x)
+Set @Caseids = (Select CaseID from #tmptbl where Rownums = @x)
+--Create Initial Forum Entry that will be updated into the next statement
+INSERT tblForum (CaseID, Header, UserCodeID, EventDate, LinkForumID, ForumHeadingID, InitialUserID ) 
+SELECT @Caseids, tblForumHeading.Description, 65, GetDate(), 0, tblForumHeading.ForumHeadingID, 1 
+FROM tblForumHeading 
+WHERE tblForumHeading.ForumHeadingID = 5 
+AND NOT EXISTS 
+( SELECT tblForum.ForumID 
+FROM tblForum 
+WHERE tblForum.CaseID = @Caseids
+AND tblForum.LinkForumID = 0 
+AND tblForum.ForumHeadingID = tblForumHeading.ForumHeadingID );
+
+--Insert into tblForum 
+INSERT tblForum ( CaseID, Header, Detail, UserCodeID, EventDate, LinkForumID, ForumHeadingID, InitialUserID ) 
+Select @Caseids, 'Motion Forum Update - From Worksheet', 
+--Grab who appeared and then Forum Note based on x 
+ISNULL((SELECT 'Who Appeared: ' + (SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x),0)) + '</br>' +
+        'Forum Note: ' + (SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x)+10000,0))),'')
+, 65, GetDate(), F.ForumID, F.ForumHeadingID, 65
+FROM tblForum F WHERE F.CaseID = @Caseids AND F.ForumHeadingID = 5 AND F.LinkForumID = 0;
+--End Forum Update Section for first case 
+
+Set @x  = @x+1;
+Set @Casenums = (Select CaseNumber from #tmptbl where Rownums = @x)
+Set @Caseids = (Select CaseID from #tmptbl where Rownums = @x)
+--Create Initial Forum Entry that will be updated into the next statement
+INSERT tblForum (CaseID, Header, UserCodeID, EventDate, LinkForumID, ForumHeadingID, InitialUserID ) 
+SELECT @Caseids, tblForumHeading.Description, 65, GetDate(), 0, tblForumHeading.ForumHeadingID, 1 
+FROM tblForumHeading 
+WHERE tblForumHeading.ForumHeadingID = 5 
+AND NOT EXISTS 
+( SELECT tblForum.ForumID 
+FROM tblForum 
+WHERE tblForum.CaseID = @Caseids
+AND tblForum.LinkForumID = 0 
+AND tblForum.ForumHeadingID = tblForumHeading.ForumHeadingID );
+
+--Insert into tblForum 
+INSERT tblForum ( CaseID, Header, Detail, UserCodeID, EventDate, LinkForumID, ForumHeadingID, InitialUserID ) 
+Select @Caseids, 'Motion Forum Update - From Worksheet', 
+--Grab who appeared and then Forum Note based on x 
+ISNULL((SELECT 'Who Appeared: ' + (SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x),0)) + '</br>' +
+        'Forum Note: ' + (SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x)+10000,0))),'')
+, 65, GetDate(), F.ForumID, F.ForumHeadingID, 65
+FROM tblForum F WHERE F.CaseID = @Caseids AND F.ForumHeadingID = 5 AND F.LinkForumID = 0;
+--End Forum Update Section for first case 
+
+
+Set @x  = @x+1;
+Set @Casenums = (Select CaseNumber from #tmptbl where Rownums = @x)
+Set @Caseids = (Select CaseID from #tmptbl where Rownums = @x)
+--Create Initial Forum Entry that will be updated into the next statement
+INSERT tblForum (CaseID, Header, UserCodeID, EventDate, LinkForumID, ForumHeadingID, InitialUserID ) 
+SELECT @Caseids, tblForumHeading.Description, 65, GetDate(), 0, tblForumHeading.ForumHeadingID, 1 
+FROM tblForumHeading 
+WHERE tblForumHeading.ForumHeadingID = 5 
+AND NOT EXISTS 
+( SELECT tblForum.ForumID 
+FROM tblForum 
+WHERE tblForum.CaseID = @Caseids
+AND tblForum.LinkForumID = 0 
+AND tblForum.ForumHeadingID = tblForumHeading.ForumHeadingID );
+
+--Insert into tblForum 
+INSERT tblForum ( CaseID, Header, Detail, UserCodeID, EventDate, LinkForumID, ForumHeadingID, InitialUserID ) 
+Select @Caseids, 'Motion Forum Update - From Worksheet', 
+--Grab who appeared and then Forum Note based on x 
+ISNULL((SELECT 'Who Appeared: ' + (SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x),0)) + '</br>' +
+        'Forum Note: ' + (SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x)+10000,0))),'')
+, 65, GetDate(), F.ForumID, F.ForumHeadingID, 65
+FROM tblForum F WHERE F.CaseID = @Caseids AND F.ForumHeadingID = 5 AND F.LinkForumID = 0;
+--End Forum Update Section for first case 
+
+
+Set @x  = @x+1;
+Set @Casenums = (Select CaseNumber from #tmptbl where Rownums = @x)
+Set @Caseids = (Select CaseID from #tmptbl where Rownums = @x)
+--Create Initial Forum Entry that will be updated into the next statement
+INSERT tblForum (CaseID, Header, UserCodeID, EventDate, LinkForumID, ForumHeadingID, InitialUserID ) 
+SELECT @Caseids, tblForumHeading.Description, 65, GetDate(), 0, tblForumHeading.ForumHeadingID, 1 
+FROM tblForumHeading 
+WHERE tblForumHeading.ForumHeadingID = 5 
+AND NOT EXISTS 
+( SELECT tblForum.ForumID 
+FROM tblForum 
+WHERE tblForum.CaseID = @Caseids
+AND tblForum.LinkForumID = 0 
+AND tblForum.ForumHeadingID = tblForumHeading.ForumHeadingID );
+
+--Insert into tblForum 
+INSERT tblForum ( CaseID, Header, Detail, UserCodeID, EventDate, LinkForumID, ForumHeadingID, InitialUserID ) 
+Select @Caseids, 'Motion Forum Update - From Worksheet', 
+--Grab who appeared and then Forum Note based on x 
+ISNULL((SELECT 'Who Appeared: ' + (SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x),0)) + '</br>' +
+        'Forum Note: ' + (SELECT dbo.udfGetWorksheetData(-8888888,187,'TextBox',(Select CaseNumber from #tmptbl where Rownums = @x)+10000,0))),'')
+, 65, GetDate(), F.ForumID, F.ForumHeadingID, 65
+FROM tblForum F WHERE F.CaseID = @Caseids AND F.ForumHeadingID = 5 AND F.LinkForumID = 0;
+--End Forum Update Section for first case 
+

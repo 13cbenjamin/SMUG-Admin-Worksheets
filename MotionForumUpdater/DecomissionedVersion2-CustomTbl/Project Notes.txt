@@ -1,0 +1,54 @@
+Project Notes:
+
+The OnChange Event in HTML for each Input: 
+onchange="update('TextBox_187_36544',187, '', '','42','-8888888',2,'False')"
+
+That onchange=Update() runs the below code from CaseWorksheet.aspx file 
+function update(id, tid, regexjs, regextype, WorksheetType, CaseID, MaximumNmbersAfterDecimalOnMath, TruncateValue)
+
+Plan: 
+I could write a new javascript function attached to Update forum. 
+This would create a function that does the update for validation
+Then I could create an ASPX file to  handle the SQL update by modifying the existing XMLCaseWorksheet Update file with my table and store the data in that new table. 
+
+Reqruiements: 
+Need to use Jquery to attach a event onchange="customUpdate(value,value,value,value,value). These values will be parsed to an ASPX file to perform the update into tblTAC_CustomWorksheetData. This custom table matches tblCaseWorksheetData exactly, except that the SavedData is VarChar(MAX). 
+Then create the ASPX file to handle DB connection string and issue update to DB. 
+I'll need to use a standard HTML Input Text Area and not the default [Textbox_Worksheetid_TextBoxNumber]
+That way it's not modifying any default BSS. 
+
+
+$('textarea[name*="TextBox_"]').keyup(function (e) { // update summary table <td> on each TextBox input change
+    $(this).each(function() {
+    var element = e.target.id
+    var value = document.getElementById(element).value
+    if (value.length >= 8000) {
+        console.log('Current Length' + value.length)
+        alert("Max characters have been reached additional notes will not save to forum!");
+        };
+    })
+
+});
+
+}
+
+
+
+
+
+STATUS:
+Converted to regular textboxes using the ID 
+Created Custom Database
+Created Custom Update function in Javascript customUpdate() 
+Now I'm running the customUpdate function in JS which calls the custom ASPX to update database 
+Data is currently pushing in, tested 2000 words and 15,078 characters without issue
+Created A UDF for custom worksheet data lookup that accepts the format (@CaseID int, @CaseWorksheetTemplateID int, @FieldType varchar(20), @FieldNumber int, @DateFormat int)
+Tested multiple matters and confirmed push was happening to separate case ID's. 
+Need to change size of the text area. 
+
+Next:
+Then need to adjust the Update String to use new UDF to gather data and append to forum. 
+
+
+Current: The Create PDF Function pushes {CaseID} as -888888 but the worksheet stores with actual case number
+Need to store as -888888 since admin worksheet but still pull the data...

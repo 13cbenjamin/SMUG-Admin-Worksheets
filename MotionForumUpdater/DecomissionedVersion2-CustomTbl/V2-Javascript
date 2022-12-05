@@ -1,0 +1,129 @@
+//The only javascript function is used when Reset Worksheet button is called
+//This funtion sets the textboxes to "" and then calls another function
+//called UpdateEvent which creates to 2 event's to handle saving it to database when value changes
+//Since a TextBox and a CommentBox are used there is input Textbox and TextArea TextBox to capture both types. 
+//Worksheet ID: 42
+function wsOnLoad(){ 
+        $('textarea[name*="TextBox_"]').css('white-space' , 'pre-wrap').css('width', '100%');
+        $('textarea[name*="TextBox_"]').attr('rows', '2');
+        $('.forumTextArea').addClass("form-control textClass")
+        $('.form-control').css('height','150');
+
+        const CaseNumber = document.getElementById('#CaseNumber');
+
+$('.forumTextArea').on('change',function (e) { // update summary table <td> on each TextBox input change
+    $(this).each(function() {
+        console.log('e.target.id: ' + e.target.id)
+    var thisid = e.target.id      
+    var thisCaseID = parseInt(thisid)-15000;
+    var final = thisCaseID.toString();
+    console.log('CaseNumber = ' + CaseNumber)  
+    customUpdate(thisid, 187, '', '','42',final,2,'False');
+    
+    })
+//customUpdate(id, tid, regexjs, regextype, WorksheetType, CaseID, MaximumNmbersAfterDecimalOnMath, TruncateValue) 
+//onchange="update('TextBox_187_36544',187, '', '','42','-8888888',2,'False')"
+/*
+$('textarea[name*="TextBox_"]').keyup(function (e) { // update summary table <td> on each TextBox input change
+    $(this).each(function() {
+    var element = e.target.id
+    var value = document.getElementById(element).value
+    if (value.length >= 8000) {
+        console.log('Current Length' + value.length)
+        alert("Max characters have been reached additional notes will not save to forum!");
+        };
+    })
+
+});
+
+}
+*/
+});
+}
+
+function cleartextboxes() {
+            $("input:text").val("");
+$('textarea[name*="TextBox_"]').val('');
+UpdateEvent();
+        };
+
+function UpdateEvent(){
+    $('textarea[name*="TextBox_"]').each(function()
+    {
+     var element = document.getElementById(this.id); 
+                var event; 
+                if(typeof(Event) === 'function') 
+                { // non IE browsers 
+                    event = new Event('change'); 
+                }
+                else
+                { // IE 
+                    event = document.createEvent('Event'); 
+                    event.initEvent('change', true, true); 
+                } 
+                element.dispatchEvent(event);
+
+})
+
+$('input[name*="TextBox_"]').each(function()
+    {
+     var element = document.getElementById(this.id); 
+                var event; 
+                if(typeof(Event) === 'function') 
+                { // non IE browsers 
+                    event = new Event('change'); 
+                }
+                else
+                { // IE 
+                    event = document.createEvent('Event'); 
+                    event.initEvent('change', true, true); 
+                } 
+                element.dispatchEvent(event);
+
+})
+};
+
+//Custom Update Function
+function customUpdate(id, tid, regexjs, regextype, WorksheetType, CaseID, MaximumNmbersAfterDecimalOnMath, TruncateValue) {
+console.log('customUpdate Ran' + id + ',' + tid + ',' + regexjs + ',' + regextype + ',' + WorksheetType + ',' + CaseID + ',' + MaximumNmbersAfterDecimalOnMath + ',' + TruncateValue)
+    var vv = document.getElementById(id);
+    if (vv != null) {
+
+        if (vv.value.match(regexjs) == null && vv.value != '') {
+
+            alert('Please enter a valid value in this field. The value must be of type - [' + regextype + ']')
+            vv.style.backgroundColor = '#f00';
+            vv.style.color = '#fff';
+            vv.focus();
+        }
+
+        else {
+            vv.style.backgroundColor = '#fff';
+            vv.style.color = '#000';
+            var nlen = 500
+            var entered = vv.value
+            var enteredlen = entered.length
+
+            if (enteredlen < nlen) {
+                entered = encodeURIComponent(entered);
+                if (WCszBT == 'ie') { var objHTTP = new ActiveXObject("Microsoft.XMLHTTP"); } else { var objHTTP = new XMLHttpRequest(); }
+                var szURL = 'XMLCustomWorksheetUpdate.aspx?cid=' + CaseID + '&tid=' + tid + '&id=' + id + '&val=' + escape(entered);
+                console.log('Ran: enteredlen < nlen')
+                objHTTP.open("POST", szURL, false);
+                objHTTP.send('1');
+            }
+            else {
+                var np = enteredlen / nlen
+                for (i = 0; i < np; i++) {
+                    if (WCszBT == 'ie') { var objHTTP = new ActiveXObject("Microsoft.XMLHTTP"); } else { var objHTTP = new XMLHttpRequest(); }
+                    var szURL = 'XMLCustomWorksheetUpdate.aspx?i=' + i + '&wstype=' + WorksheetType + '&cid=' + CaseID + '&tid=' + tid + '&id=' + id + '&val=' + escape(encodeURIComponent(entered.substr(i * nlen, nlen)));
+                    console.log('Ran: i = 0; i < np; i++')
+                    objHTTP.open("POST", szURL, false);
+                    objHTTP.send('1');
+                }
+
+            }
+        }
+    }
+       
+}

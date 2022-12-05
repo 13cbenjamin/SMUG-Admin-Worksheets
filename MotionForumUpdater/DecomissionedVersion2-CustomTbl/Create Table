@@ -1,0 +1,17 @@
+--Create Custom Table in Database  -- Custom table that is used for Version 2 Motion Calender Worksheet 
+
+Create Table tblTAC_CustomWorksheetData(
+    CaseWorksheetID INT IDENTITY(1,1) PRIMARY KEY, -- Auto incrementing primary key ID number 
+    TruCode CHAR(3),
+    CaseID INT,
+    CaseWorksheetTemplateID INT,
+    FieldID varchar(50),
+    SavedData VARCHAR(MAX),
+    DateLastUpdate DATETIME,
+    UserIDLastUpdated VARCHAR(50),
+    InqCaseWorksheetID INT,
+    TextData Text,
+    CONSTRAINT FK_CaseID FOREIGN KEY (CaseID) REFERENCES tblCaseData(CaseID)); -- Establishes FK for CaseID 
+
+
+
