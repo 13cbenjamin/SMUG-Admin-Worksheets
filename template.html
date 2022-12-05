@@ -1,0 +1,132 @@
+<div class="well"> 
+    <h4>Cases Completing</h4>  
+    <table class="table table-bordered" style="width:auto;background:#FFFFFF;"> 
+        <thead> 
+            <tr> 
+                <td>Current User:</td> 
+                <td>|:UserName:|</td> 
+            </tr> 
+            <tr> 
+                <td>Current Date:</td> 
+                <td>|:ShortDate:|</td> 
+            </tr> 
+            <tr>
+                <td># of Months Remaining</td>
+                <td>[TextBox^Number^99.100]</td>
+            </tr>
+        </thead> 
+    </table> 
+    </div> 
+<div style="margin: 0;padding:0" >
+                        <ul style="list-style-type:none;position:absolute;top:10px;right:20px;"> 
+                            <a onclick="WCgoToApp('CaseWorksheet.aspx?xwin=&amp;wstype=60&amp;standalone=1&amp;cid=-8888888')" title="Refresh" class="btn btn-primary" style="color: #FFFFFF" tabindex="1">Refresh</a>
+                        </ul>
+</div>
+    <div class="container-fluid"> 
+    <table id="table_id" class="table table-striped table-bordered " style="background:#4164a5;"> 
+        <thead class="thead-light"> 
+            <tr> 
+                <th scope="col" width="10%">Case #</th> 
+                <th scope="col" width="5%">Month</th> 
+                <th scope="col" width="5%">Info</th>
+                <th scope="col" width="25%">Comment1</th>
+                <th scope="col" width="25%">Comment2</th>
+                <th scope="col" width="10%">Status</th>
+                <th scope="col" width="5%">Cutoff</th>
+                <th scope="col" width="15%">Notes</th>
+
+            </tr> 
+              |~Select '
+                <tbody><tr>
+  
+        <td scope="row"><a href="javascript:WCenableScreenOverflow()" style="cursor:pointer;color:blue;font-size:1.2em;" onclick="WCopenWindow(''PleaseWaitStatic.aspx?prog=SetInqCase.aspx?&qs=xwin=6|qcaseid=' + cast(cd.CaseID as varchar) + '|progskip=~'',''Query61'','',scrollbars,resizable,'',''All'')">' + CD.DisplaycaseNumber + '</a>' + '<br/>' + MC.Deb1LongName + '<br/>' + MC.Deb2LongName + '</td>
+        <td>' + Convert(Varchar, CD.MonthsRemainingInPlan) + '</td> 
+                    <td><button type="button" id="' + CONCAT(Convert(Varchar, CD.CaseID), '00') 
+                    + '" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal' + CONCAT(Convert(Varchar, CD.CaseID), '10') 
+                    + '"><span class="glyphicon glyphicon-star"></span></button></td> 
+                    <td><span><strong>' + ISNULL((select CONVERT(VARCHAR, Flag) from vwCaseFlags where FlagCodesID=3 and LinkTableKey = CD.CaseID), '') +'</strong></span></td>
+                    <td><span><strong>' + ISNULL((select CONVERT(VARCHAR, Flag) from vwCaseFlags where FlagCodesID=4 and LinkTableKey = CD.CaseID), '') +'</strong></span></td>
+                    <td class="tac_select"><select class="status" name="Status" size="1" id="' + CONCAT(Convert(Varchar, CD.CaseID), '07')  + '">
+                        <option value="Choose One">Choose One</option>
+                        <option style="background-color: #deeaee" value="Need BAPCPA">Need BAPCPA</option>
+                        <option style="background-color: #b1cbbb" value="Need DSO">Need DSO</option>
+                        <option style="background-color: #fefbd8" value="Following">Following</option>
+                        <option style="background-color: #b5e7a0" value="Ready to Close">Ready to Close</option>
+                        <option style="background-color: #fabd3b" value="Audit for PIF">Audit for PIF</option>
+                        </select> [TextBox' + CONCAT(Convert(Varchar, CD.CaseID), '08.125') + ']' + '</td>
+                    <td>Cutoff [CheckBox' + CONCAT(Convert(Varchar, CD.CaseID), '03') + ']' + '</td>
+                    <td>[CommentBox' + CONCAT(Convert(Varchar, CD.CaseID), '04.200') + ']' + '</td>                    </tr>
+            </tbody>' + 
+                    '<div id="myModal' + CONCAT(Convert(Varchar, CD.CaseID), '10') 
+                    + '" class="modal modal-lg fade" role="dialog">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Case Details</h4>
+                            </div>
+                            <div id="modalTable" style="display:table;"> 
+                                        <div class="table-row" style="display:table-row">
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + CD.DisplayCaseNumber + '</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">Debtor 1</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">Debtor 2</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">Satisfied</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">N/A</div> 
+                                        </div> 
+                                        <div class="table-row" style="display:table-row">
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">Entitled to Discharge:</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + ISNULL((MC.DebtorEntitledToDischargeDescription), '') +'</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + ISNULL((MC.DebtorEntitledToDischarge0Description), '') +'</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + ISNULL((Select dbo.udfGetWorksheetData(MC.CaseID,140,'"CheckBox"',64,0)), 'N') + '</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + ISNULL((Select dbo.udfGetWorksheetData(MC.CaseID,140,'"CheckBox"',65,0)), 'N') + '</div> 
+                                        </div> 
+                                        <div class="table-row" style="display:table-row"> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">Credit Counsel Cert Date:</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + CONVERT(VARCHAR, CAST(MC.CreditCounselCertificationDate AS DATE)) +'</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + CONVERT(VARCHAR, CAST(MC.CreditCounselCertificationDate0 AS DATE)) +'</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + ISNULL((Select dbo.udfGetWorksheetData(CD.CaseID,140,'"CheckBox"',55,0)), 'N') + '</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + ISNULL((Select dbo.udfGetWorksheetData(CD.CaseID,140,'"CheckBox"',56,0)), 'N') + '</div> 
+                                        </div> 
+                                        <div class="table-row" style="display:table-row"> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">Debtor Education Date:</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + CONVERT(VARCHAR, CAST(CD.DebtorEducationDate AS DATE)) +'</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + CONVERT(VARCHAR, CAST(CD.DebtorEducationDate0 AS DATE)) +'</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + ISNULL((Select dbo.udfGetWorksheetData(CD.CaseID,140,'"CheckBox"',58,0)), 'N') + '</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + ISNULL((Select dbo.udfGetWorksheetData(CD.CaseID,140,'"CheckBox"',59,0)), 'N') + '</div> 
+                                        </div> 
+                                        <div class="table-row" style="display:table-row">
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black"> DSO Mailed: </div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + ISNULL(CONVERT(VARCHAR, (Select dbo.udfGetCaseDate(CD.CaseID,31))), 'N') + '</div> 
+                                        </div> 
+                                        <div class="table-row" style="display:table-row">
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black"> Debtor Education Mailed: </div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + ISNULL(CONVERT(VARCHAR, (Select dbo.udfGetCaseDate(CD.CaseID,30))), 'N') + '</div> 
+                                        </div> 
+                                        <div class="table-row" style="display:table-row">
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black"> Debtor EDU Cert Rcvd: </div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + ISNULL(CONVERT(VARCHAR, (Select dbo.udfGetCaseDate(CD.CaseID,28))), 'N') + '</div> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black">' + ISNULL(CONVERT(VARCHAR, (Select dbo.udfGetCaseDate(CD.CaseID,29))), 'N') + '</div> 
+                                        </div> 
+                                        <div class="table-row" style="display:table-row"> 
+                                            <div class="table-cell" style="display:table-cell;padding:10px;border:1px solid black" ><span style="color:#000000;font-size:12;"><strong>Comments:</strong></span></br>' + ISNULL((SELECT dbo.udfGetWorksheetData(CD.CaseID,140,'"TextBox"',10001, 0)), '') + '</div> 
+                                        </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                '
+                 
+               AS FieldData
+               from tblCaseData as CD
+			   join vwCRMainCase as MC on CD.CaseID = MC.CaseID
+                WHERE MC.CaseDisposition <> 'C' 
+                    and CD.MonthsRemainingInPlan <= dbo.udfGetWorksheetData('-8888888', 208, 'TextBox', 99, 0)
+                    and MC.CloseCode = 'Z'
+                    and CD.ConfirmationDate <> '1/1/1900'
+                    and dbo.udfGetWorksheetData('-8888888', 208, 'CheckBox', CONCAT(CONVERT(VARCHAR, CD.CaseID), '03'), 0) <> 'true'
+                Order By CD.MonthsRemainingInPlan ASC~|
+
+
+
+        </table>
+</div>
