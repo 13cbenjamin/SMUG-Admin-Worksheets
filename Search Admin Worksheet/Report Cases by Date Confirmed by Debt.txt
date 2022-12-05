@@ -1,0 +1,64 @@
+# Report Cases by Date Confirmed by Debtor Last Name
+
+Select isNull(isNull((Select Flag from tblCh13Flags Where LinkTableCodeID = '1000' 
+and FlagCodesID = '1008' 
+and LinkTableKey = tblCaseData.CaseID), ''),'') as F0,
+isNull(isNull((Select Flag from tblCh13Flags Where LinkTableCodeID = '1000' 
+and FlagCodesID = '1010' and LinkTableKey = tblCaseData.CaseID), ''),'') as F1,
+isNull(tblCaseData.BalanceOnHand,0) as F2,
+isNull(tblCaseData.CaseNumber,'') as F3,
+isNull(tblCaseData.ConfirmationDate,'') as F4,
+isNull(tblCaseData.PetitionFiledDate,'') as F5,
+isNull(tblCaseData.UnsecuredInterest,0) as F6,
+isNull(tblCaseData.UnsecuredPercent,0) as F7,
+isNull(F0.FirstName,'') as F8,
+isNull(F2.LastName,'') as F9,
+isNull(F3.Description,'') as F10,
+isNull(F4.JudgeCode,'') as F11 
+FROM tblCaseData 
+LEFT OUTER JOIN tblUserTable F0 ON tblCaseData.CaseAdministrator = F0.UserCodeID 
+LEFT OUTER JOIN tblCaseName F1 ON tblCaseData.CaseID = F1.CaseID 
+and F1.NameTypeID = 5 
+LEFT OUTER JOIN tblName F2 ON F1.NameID = F2.NameID 
+LEFT OUTER JOIN tblDivisionCode F3 ON tblCaseData.DivisionCodeID = F3.DivisionCodeID 
+LEFT OUTER JOIN tblJudge F4 ON tblCaseData.JudgeID = F4.JudgeID 
+WHERE isNull(tblCaseData.ConfirmationDate,'') >= '3/21/2013' 
+And isNull(tblCaseData.ConfirmationDate,'') <= '3/22/2013' 
+Order By isNull(F2.LastName,'') Asc
+
+Tables:
+tblCh13Flags -> LinkTableCodeID, FlagCodesID, LinkTableKey
+tblCaseData -> CaseID, BalanceOnHand, CaseNumber, ConfirmationDate, PetitionFiledDate, UnsecuredInterest, UnsecuredPercent
+tblUserTable -> FirstName
+tblName -> LastName 
+tblJudge -> JudgeCode 
+tblDivisionCode
+
+Joines: 
+tblCaseData.CaseAdministrator on tblUserTable.UserCodeID
+tblCaseName.CaseID on tblCaseData.CaseID
+tblName on tblCaseName.NameId = tblName.NameID
+tblCaseData.DivisionCodeID on tblDivisionCode.DivisionCodeID
+tblCaseData.JudgeID on tblJudge.JudgeID
+
+Filters: 
+ConfirmationDate >= '3/21/2013' AND 
+ConfirmationDate <= '3/22/2013'
+
+Order: 
+Order by LastName ASC 
+
+Parameters:
+Beginning Date
+Ending Date 
+
+
+Form Type ID: 2084
+Form Type Abbr: TAC-RPT-CASE-DATE-CONF
+
+Report Setup: 
+ID: 576
+Name on Menu: Report Cases by Date Confirmed by Debtor Last Name
+G:\\13software_print_tac\\rpt\\TAC_Report_Cases_by_DateConf_Debtor_LastName_CB.rpt
+
+PleaseWait.aspx?prog=SetForm&qs=rpt=TAC_Report_Cases_by_DateConf_Debtor_LastName_CB

@@ -1,0 +1,17 @@
+# Report Converted / Dismissed Cases
+
+Select isNull(tblCaseData.BalanceOnHand,0) as F0,
+    isNull(tblCaseData.CaseNumber,'') as F1,
+    isNull(tblCaseData.ConfirmationDate,'') as F2,
+    isNull(tblCaseData.FinalReportDate,'') as F3,
+    isNull(tblCaseData.FRCourtOrderDate,'') as F4,
+    isNull(F0.CaseDisposition,'') as F5,
+    isNull(F0.CloseCode,'') as F6,
+    isNull(F0.CloseCodeDescription,'') as F7,
+    isNull(F0.CloseCodeID,0) as F8,isNull(F2.LastName,'') as F9 
+FROM tblCaseData 
+    LEFT OUTER JOIN tblCloseCode F0 ON tblCaseData.CloseCodeID = F0.CloseCodeID 
+    LEFT OUTER JOIN tblCaseName F1 ON tblCaseData.CaseID = F1.CaseID and F1.NameTypeID = 5 
+    LEFT OUTER JOIN tblName F2 ON F1.NameID = F2.NameID 
+WHERE isNull(F0.CloseCodeID,0) = '15' 
+Order By isNull(tblCaseData.CaseNumber,'') Asc
